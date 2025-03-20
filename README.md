@@ -1,10 +1,10 @@
 # 06-CSDesafio: Identificação por DNA
 Este repositório contém a solução para o desafio de programação em que você deve identificar uma pessoa com base em seu DNA, comparando sequências de DNA fornecidas com as de um banco de dados.
 
-💡 Descrição do Desafio
+💡 Descrição do Desafio:
 O desafio consiste em implementar um programa que receba um arquivo de banco de dados contendo informações sobre diversas pessoas e suas sequências de DNA, e um arquivo de sequência de DNA de uma pessoa. O programa deve identificar a pessoa com base no DNA fornecido.
 
-🔍 Como Funciona
+🔍 Como Funciona:
 O programa recebe dois parâmetros:
 
 Um arquivo CSV que contém um banco de dados com os nomes e sequências de DNA de várias pessoas.
