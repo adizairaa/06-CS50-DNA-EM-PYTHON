@@ -1,0 +1,78 @@
+# python dna.py small.csv sequences/1.txt
+# python dna.py large.csv sequences/6.txt
+
+from csv import reader, DictReader
+from sys import argv
+
+# Verifica se os argumentos necessários foram passados na linha de comando
+if len(argv) < 3:
+    print("Sequência do arquivo: dna.py nome.txt nome.csv")
+    exit()
+
+# Para lêr a sequência de DNA do arquivo fornecido
+with open(argv[2]) as dnafile:
+    dnareader = reader(dnafile)
+    for row in dnareader:
+        dnalist = row
+
+# Armazena a sequência de DNA em uma string NÃO PODE ESQUECER SE NÃO NÃO TEM COMO VER OS MACHS 
+dna = dnalist[0]
+
+# Cria um dicionário onde serão armazenadas as sequências de DNA que queremos contar
+sequences = {}
+
+# Extrai as sequências do banco de dados e as armazena em uma lista
+with open(argv[1]) as peoplefile:
+    people = reader(peoplefile)
+    for row in people:
+        dnaSequences = row
+        dnaSequences.pop(0)  # Usado para tirar o nome da pessoa (ou seja a primeira coluna)
+        break
+
+# Copia a lista de sequências para um dicionário onde as chaves representa os genes
+for item in dnaSequences:
+    sequences[item] = 1
+
+# Itera pela sequência de DNA, contando as repetições das sequências do dicionário
+for key in sequences:
+    l = len(key)  # Tamanho da sequência
+    tempMax = 0  # Armazena o máximo de repetições encontradas
+    temp = 0  # Contador temporário de repetições
+
+    for i in range(len(dna)):
+        # Após contar uma sequência, pula para evitar contagens repetidas
+        while temp > 0:
+            temp -= 1
+            continue
+
+        # Se o segmento de DNA corresponde à chave e há repetição, começa a contar
+        if dna[i: i + l] == key:
+            while dna[i - l: i] == dna[i: i + l]:
+                temp += 1
+                i += l
+
+            # Se a contagem de repetições for maior que o máximo anterior, substitui o valor
+            if temp > tempMax:
+                tempMax = temp
+
+    # Armazena a sequência mais longa encontrada no dicionário
+    sequences[key] += tempMax
+
+# Abre e itera sobre o banco de dados de pessoas, tratando cada pessoa como um dicionário
+with open(argv[1], newline='') as peoplefile:
+    people = DictReader(peoplefile)
+    for person in people:
+        match = 0  # Contador de coincidências
+
+        # Compara as sequências de DNA com cada pessoa e imprime o nome se houver correspondência
+        for dna in sequences:
+            if sequences[dna] == int(person[dna]):
+                match += 1
+
+        # Se houver correspondência completa com todas as sequências
+        if match == len(sequences):
+            print(person['name'])
+            exit()  # Sai do programa
+
+    # Se não encontrar correspondência, vai imprimir "Não encontrado"
+    print("Não encontrado")
